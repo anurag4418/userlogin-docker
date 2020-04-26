@@ -16,7 +16,7 @@ pipeline {
 	                script {
 		                def mvnHome = tool name: 'maven3', type: 'maven'
 		                sh "${mvnHome}/bin/mvn -version"
-		                sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore=true clean deploy"	                       
+		                sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore=true clean package"	                       
 	                }
 	          }
 	    }
@@ -38,10 +38,12 @@ pipeline {
 	    	steps {
 	    		script {
 
-	    			sshPublisher(publishers: [sshPublisherDesc(configName: 'ansible_server', 
-					transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "ansible-playbook /etc/ansible/copywarfile.yml -e current_project_version=${proj_version}", 
-					execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', 
-					remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+	    			sshagent(['key1']) {
+	    			def tomcatServerIp = '35.202.168.163' 
+			        sh "ssh anurag@${tomcatServerIp} sudo rm -rf /opt/tomcat/webapps/*.war "
+	    			sh "scp -o StrictHostKeyChecking=no target/UserLogin*.war anurag@${tomcatServerIp}:/opt/tomcat/webapps/userlogin.war"
+                    sh "ssh anurag@${tomcatServerIp} sudo systemctl restart tomcat.service"
+					}
 	    		}
 	    	}
 	    }
