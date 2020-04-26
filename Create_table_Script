@@ -1,0 +1,12 @@
+-- Table Name - USER_DETAILS
+-- firstname, lastname, email, username, password, lastupdated
+CREATE TABLE 'USER_DETAILS' (
+  'id; int(10) NOT NULL auto_increment,
+  'firstname' varchar(45),
+  'lastname' varchar(45),
+  'email' varchar(64),
+  'username' varchar(45) NOT NULL,
+  'password' varchar(45) NOT NULL,
+  'lastupdated' date,
+  PRIMARY KEY  ('id')
+) 
