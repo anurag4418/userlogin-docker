@@ -26,13 +26,13 @@
 
         <properties>
 
-        <jersey.version>2.27</jersey.version>
+          <jersey.version>2.27</jersey.version>
 
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+          <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-      <ip>35.202.243.21</ip>
+          <nexus_ip>35.202.168.163</nexus_ip>
 
-    </properties>
+        </properties>
 
     <build>
 
@@ -106,7 +106,7 @@
 
                   <serverId>releases</serverId>
 
-                  <nexusUrl>http://${ip}:8081/</nexusUrl>
+                  <nexusUrl>http://${nexus_ip}:8081/</nexusUrl>
 
                   <skipStaging>true</skipStaging>
 
@@ -200,7 +200,7 @@
 
       <id>releases</id>
 
-      <url>http://${ip}:8081/repository/helloMaven-release/</url>
+      <url>http://${nexus_ip}:8081/repository/helloworld_release/</url>
 
     </repository>
 
@@ -208,7 +208,7 @@
 
       <id>snapshots</id>
 
-      <url>http://${ip}:8081/repository/helloMaven-snapshot/</url>
+      <url>http://${nexus_ip}:8081/repository/helloworld_snap/</url>
 
     </snapshotRepository>
 
