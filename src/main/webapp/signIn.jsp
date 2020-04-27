@@ -6,7 +6,7 @@
     Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/cicd","root", "");
     Statement st = con.createStatement();
     ResultSet rs;
-    rs = st.executeQuery("select * from user where username='" + userName + "' and password='" +password + "'");
+    rs = st.executeQuery("select * from USER_DETAILS where username='" + userName + "' and password='" +password + "'");
     if (rs.next()) {
         session.setAttribute("userid", userName);
         response.sendRedirect("success.jsp");
