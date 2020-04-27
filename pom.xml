@@ -30,7 +30,7 @@
 
           <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-          <nexus_ip>35.202.168.163</nexus_ip>
+          <nexus_ip>35.222.135.35</nexus_ip>
 
         </properties>
 
