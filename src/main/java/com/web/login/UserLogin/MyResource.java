@@ -20,7 +20,7 @@ import javax.ws.rs.core.MediaType;
 
 @Path("myresource")
 
-public class MyResuorce {
+public class MyResource {
 
 
 
