@@ -6,7 +6,7 @@ pipeline {
 	    stage('git') {
 	        steps {
 	           script {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'git_creds', url: 'https://github.com/anurag4418/userlogin.git']]])	              
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'git_creds', url: 'https://github.com/anurag4418/userlogin-docker.git]]])	              
 	           }
 	        }
 	    }
@@ -16,7 +16,7 @@ pipeline {
 	                script {
 		                def mvnHome = tool name: 'maven3', type: 'maven'
 		                sh "${mvnHome}/bin/mvn -version"
-		                sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore=true clean deploy"	                       
+		                sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore=true clean package"	                       
 	                }
 	          }
 	    }
@@ -34,14 +34,15 @@ pipeline {
 
 	    }
 
-	    stage('deploy') {
+	    stage('docker-build') {
 	    	steps {
 	    		script {
-
-	    			sshPublisher(publishers: [sshPublisherDesc(configName: 'ansible_server', 
-					transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'ansible-playbook /etc/ansible/copywarfile.yml', 
-					execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', 
-					remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+						sshPublisher(publishers: [sshPublisherDesc(configName: 'docker_host', 
+						transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'docker build -t userloginapp .',
+						execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', 
+						remoteDirectory: '//home//anurag_junghare', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/UserLogin.war,Dockerfile')],
+						usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+	    			
 	    		}
 	    	}
 	    }
