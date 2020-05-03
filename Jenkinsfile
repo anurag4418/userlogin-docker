@@ -39,7 +39,7 @@ pipeline {
 	    		script {
 
 	    				sshPublisher(publishers: [sshPublisherDesc(configName: 'docker_host', transfers: [sshTransfer(cleanRemote: false, excludes: '', 
-	    				execCommand: 'docker-compose-up', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', 
+	    				execCommand: 'docker-compose up', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', 
 	    				remoteDirectory: '//home//anurag_junghare', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/UserLogin.war,Dockerfile,docker-compse.yml')], 
 	    				usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])	
 	    		}
