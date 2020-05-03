@@ -1,0 +1,28 @@
+version: '3'
+services:
+  db:
+    image: mysql:latest
+    container_name: my-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: cicd
+      # MYSQL_USER: root
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+  
+  web:
+    build: ./
+    restart: on-failure
+    #image: userloginapp
+    container_name: my-web
+    environment:
+      JDBC_URL: jdbc:mysql://my-mysql:3306/cicd?connectTimeout=0&amp;socketTimeout=0&amp;autoReconnect=true
+      JDBC_USER: root
+      JDBC_PASS: password
+    ports:
+     - "8080:8080"
+    links:
+     - "db:cicd"
+    depends_on:
+     - db
