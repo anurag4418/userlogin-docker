@@ -6,7 +6,7 @@ pipeline {
 	    stage('git') {
 	        steps {
 	           script {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'git_creds', url: 'https://github.com/anurag4418/userlogin.git']]])	              
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'git_creds', url: 'https://github.com/anurag4418/userlogin-docker.git']]])	              
 	           }
 	        }
 	    }
@@ -34,16 +34,11 @@ pipeline {
 
 	    }
 
-	    stage('deploy') {
+	    stage('docker-build') {
 	    	steps {
 	    		script {
 
-	    			sshagent(['key1']) {
-	    			def tomcatServerIp = '35.202.168.163' 
-			        sh "ssh anurag@${tomcatServerIp} sudo rm -rf /opt/tomcat/webapps/*.war "
-	    			sh "scp -o StrictHostKeyChecking=no target/UserLogin*.war anurag@${tomcatServerIp}:/opt/tomcat/webapps/userlogin.war"
-                    sh "ssh anurag@${tomcatServerIp} sudo systemctl restart tomcat.service"
-					}
+						sshPublisher(publishers: [sshPublisherDesc(configName: 'docker_host', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'docker-compose up -d', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '//home//anurag_junghare', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/UserLogin.war,Dockerfile,docker-compose.yml')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
 	    		}
 	    	}
 	    }
