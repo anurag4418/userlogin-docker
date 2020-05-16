@@ -10,6 +10,9 @@ services:
       MYSQL_PASSWORD: password
     ports:
       - "3306:3306"
+    restart: always
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/          
   
   web:
     build: ./
