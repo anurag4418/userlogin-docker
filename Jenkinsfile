@@ -38,7 +38,7 @@ pipeline {
 	    	steps {
 	    		script {
 
-						sh 'docker build -t anuragjunghare/userlogin:0.0.1 .'
+						sshPublisher(publishers: [sshPublisherDesc(configName: 'docker_host', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'docker build -t anuragjunghare/userlogin:0.0.1 .', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '//home//anurag_junghare', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/UserLogin.war,Dockerfile')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
 	    		}
 	    	}
 	    }
